@@ -4,6 +4,7 @@
 <head>
     <title>IQ Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         /* Your existing styles */
         body {
@@ -41,6 +42,20 @@
             background: #0d6efd;
         }
 
+        .sidebar-section {
+            color: #94a3b8;
+            padding: 20px 20px 10px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+        }
+
+        .sidebar .submenu-item {
+            padding-left: 40px;
+            font-size: 0.9rem;
+        }
+
         .sidebar-btn {
             width: 100%;
             background: none;
@@ -65,6 +80,24 @@
             padding: 15px;
             border-bottom: 1px solid #ddd;
         }
+
+        .collapse-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .collapse-toggle::after {
+            content: "\F282";
+            font-family: "bootstrap-icons";
+            transition: transform 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .collapse-toggle:not(.collapsed)::after {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 
@@ -78,13 +111,46 @@
             Dashboard
         </a>
 
-        <a href="{{ route('questions.create') }}" class="{{ request()->routeIs('questions.create') ? 'active' : '' }}">
-            Add IQ Question
+        <!-- <div class="sidebar-section">Menu</div> -->
+
+        <a href="#iqChallengeSubmenu" data-bs-toggle="collapse" class="collapse-toggle {{ request()->is('questions*') ? '' : 'collapsed' }}" aria-expanded="{{ request()->is('questions*') ? 'true' : 'false' }}">
+            IQ Challenges
         </a>
 
-        <a href="{{ route('questions.index') }}" class="{{ request()->routeIs('questions.index') ? 'active' : '' }}">
-            View IQ Questions
-        </a>
+        <div class="collapse {{ request()->is('questions*') ? 'show' : '' }}" id="iqChallengeSubmenu">
+            <a href="{{ route('questions.create') }}" class="submenu-item {{ request()->routeIs('questions.create') ? 'active' : '' }}">
+                Add IQ Question
+            </a>
+            <a href="{{ route('questions.index') }}" class="submenu-item {{ request()->routeIs('questions.index') ? 'active' : '' }}">
+                View IQ Questions
+            </a>
+        </div>
+        <!-- Add this after the IQ Challenges section or wherever appropriate -->
+<a href="#mathSubmenu" data-bs-toggle="collapse" class="collapse-toggle {{ request()->is('math*') ? '' : 'collapsed' }}" aria-expanded="{{ request()->is('math*') ? 'true' : 'false' }}">
+    Math Questions
+</a>
+
+<div class="collapse {{ request()->is('math*') ? 'show' : '' }}" id="mathSubmenu">
+    <a href="{{ route('math.create') }}" class="submenu-item {{ request()->routeIs('math.create') ? 'active' : '' }}">
+        Add Math Question
+    </a>
+    <a href="{{ route('math.index') }}" class="submenu-item {{ request()->routeIs('math.index') ? 'active' : '' }}">
+        View Math Questions
+    </a>
+</div>
+<!-- Add this after the Math Questions section -->
+<a href="#questionsManageSubmenu" data-bs-toggle="collapse" class="collapse-toggle {{ request()->is('questions-manage*') ? '' : 'collapsed' }}" aria-expanded="{{ request()->is('questions-manage*') ? 'true' : 'false' }}">
+    Question Bank
+</a>
+
+<div class="collapse {{ request()->is('questions-manage*') ? 'show' : '' }}" id="questionsManageSubmenu">
+    <a href="{{ route('questions-manage.create') }}" class="submenu-item {{ request()->routeIs('questions-manage.create') ? 'active' : '' }}">
+        Add Question
+    </a>
+    <a href="{{ route('questions-manage.index') }}" class="submenu-item {{ request()->routeIs('questions-manage.index') ? 'active' : '' }}">
+        View All Questions
+    </a>
+</div>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
@@ -105,6 +171,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
